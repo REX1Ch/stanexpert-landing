@@ -23,6 +23,15 @@ PHONE_TEL = "tel:+78001007249"
 EMAIL = "info@stanexpert.com"
 METRIKA = "110756129"
 
+# Телеграм-бот для приёма заявок с формы (АВАРИЙНЫЙ РЕЖИМ).
+# ВНИМАНИЕ: токен попадает в публичный JS-файл страницы. Бот выделенный
+# (@leadreservestan_bot), продажные боты не затронуты. После восстановления
+# stanexpert.com токен ОБЯЗАТЕЛЬНО отозвать: @BotFather -> /revoke.
+TG_TOKEN = "9225468750:AAHwd4UYLr9Le7dOPigtpY4fk3faXo9dU5Y"
+# chat_id группы + топик для заявок (задан владельцем: t.me/c/4300610435/244).
+TG_CHAT_ID = "-1004300610435"
+TG_THREAD_ID = "244"
+
 
 def esc(s):
     return html.escape(str(s), quote=False)
@@ -271,6 +280,37 @@ page = f"""<!DOCTYPE html>
   </div>
 </section>
 
+<section id="lead-form" class="bg-base-200 py-14 my-10">
+  <div class="max-w-xl mx-auto px-4">
+    <h2 class="text-2xl md:text-3xl font-bold mb-2 text-center">Оставить заявку</h2>
+    <p class="text-center opacity-80 mb-6">Перезвоним и подберём комплектацию под вашу задачу. Работаем с юрлицами и ИП: лизинг от 4,6%, взнос от 0%.</p>
+    <form id="tg-form" class="card bg-base-100 shadow-md">
+      <div class="card-body gap-4">
+        <label class="form-control w-full">
+          <span class="label-text mb-1 font-medium">Ваше имя *</span>
+          <input name="name" type="text" required maxlength="80" placeholder="Иван" class="input input-bordered w-full">
+        </label>
+        <label class="form-control w-full">
+          <span class="label-text mb-1 font-medium">Телефон *</span>
+          <input name="phone" type="tel" required maxlength="30" placeholder="+7 (___) ___-__-__" class="input input-bordered w-full">
+        </label>
+        <label class="form-control w-full">
+          <span class="label-text mb-1 font-medium">Комментарий</span>
+          <textarea name="msg" rows="3" maxlength="600" placeholder="Какой узел восстанавливаете, регион, интересующая модель" class="textarea textarea-bordered w-full"></textarea>
+        </label>
+        <!-- анти-спам: скрытое поле, люди его не заполняют -->
+        <input name="company" type="text" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+        <label class="flex items-start gap-2 text-xs opacity-80 cursor-pointer">
+          <input name="agree" type="checkbox" required class="checkbox checkbox-sm checkbox-primary mt-0.5">
+          <span>Согласен(на) на обработку персональных данных</span>
+        </label>
+        <button type="submit" id="tg-form-btn" class="btn btn-accent text-white w-full">Отправить заявку</button>
+        <p id="tg-form-status" class="text-center text-sm min-h-5"></p>
+      </div>
+    </form>
+  </div>
+</section>
+
 <section id="faq" class="max-w-4xl mx-auto px-4 py-10">
   <h2 class="text-2xl md:text-3xl font-bold mb-6">Частые вопросы</h2>
   <div class="flex flex-col gap-3">{faq_html}
@@ -307,6 +347,45 @@ document.querySelectorAll('.filter-btn').forEach(function (b) {{
   }});
 }});
 </script>
+<script>
+/* форма заявки -> телеграм-бот (токен виден в коде страницы, см. TG_TOKEN) */
+(function () {{
+  var form = document.getElementById('tg-form');
+  if (!form) return;
+  var btn = document.getElementById('tg-form-btn');
+  var status = document.getElementById('tg-form-status');
+  form.addEventListener('submit', function (e) {{
+    e.preventDefault();
+    if (form.company.value) return; /* honeypot */
+    var name = form.name.value.trim(), phone = form.phone.value.trim(), msg = form.msg.value.trim();
+    if (!name || !phone) {{ status.textContent = 'Заполните имя и телефон.'; status.className = 'text-center text-sm min-h-5 text-error'; return; }}
+    var text = '🔔 ЗАЯВКА С РЕЗЕРВНОГО ЛЕНДИНГА\n\n👤 Имя: ' + name + '\n📞 Телефон: ' + phone +
+               (msg ? '\n💬 Комментарий: ' + msg : '') +
+               '\n\n🌐 Страница: ' + location.href;
+    btn.disabled = true; btn.textContent = 'Отправляем…';
+    fetch('https://api.telegram.org/bot{TG_TOKEN}/sendMessage', {{
+      method: 'POST', headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{chat_id: '{TG_CHAT_ID}', message_thread_id: '{TG_THREAD_ID}', text: text, parse_mode: 'HTML'}})
+    }}).then(function (r) {{ return r.json(); }}).then(function (d) {{
+      if (d.ok) {{
+        status.textContent = 'Заявка отправлена! Перезвоним в ближайшее время.';
+        status.className = 'text-center text-sm min-h-5 text-success';
+        form.reset();
+        if (window.ym) ym({METRIKA}, 'reachGoal', 'lead_form_sent');
+      }} else {{
+        status.textContent = 'Не отправилось. Позвоните нам: {PHONE_DISP}';
+        status.className = 'text-center text-sm min-h-5 text-error';
+      }}
+    }}).catch(function () {{
+      status.textContent = 'Нет связи. Позвоните нам: {PHONE_DISP}';
+      status.className = 'text-center text-sm min-h-5 text-error';
+    }}).finally(function () {{
+      btn.disabled = false; btn.textContent = 'Отправить заявку';
+    }});
+  }});
+}})();
+</script>
+
 <!-- Yandex.Metrika counter -->
 <script>
 (function(m,e,t,r,i,k,a){{m[i]=m[i]||function(){{(m[i].a=m[i].a||[]).push(arguments)}};
