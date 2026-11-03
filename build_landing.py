@@ -80,18 +80,24 @@ SHORT_TEXT = [
 ]
 
 
-def spec_table(specs):
-    """Двухстолбцовая таблица: параметр | значение (разбор строк specs)."""
-    import re
+def spec_table(specs, specs_full):
+    """Двухстолбцовая таблица: параметр | значение.
+    Приоритет — полная таблица из «Базы по станкам» (specs_full)."""
     rows = []
-    for s in specs or []:
-        m = re.match(r"^(.*?)(\d.*)$", s.strip())
-        if m:
-            param, val = m.group(1).strip(" ."), m.group(2).strip()
-        else:
-            param, val = s.strip(), ""
-        rows.append(f'<tr><td class="opacity-80">{esc(param)}</td>'
-                    f'<td class="text-right font-semibold whitespace-nowrap">{esc(val)}</td></tr>')
+    if specs_full:
+        for param, val in specs_full:
+            rows.append(f'<tr><td class="opacity-80">{esc(param)}</td>'
+                        f'<td class="text-right font-semibold">{esc(val)}</td></tr>')
+    else:  # фолбэк: разбор коротких строк specs
+        import re
+        for s in specs or []:
+            m = re.match(r"^(.*?)(\d.*)$", s.strip())
+            if m:
+                param, val = m.group(1).strip(" ."), m.group(2).strip()
+            else:
+                param, val = s.strip(), ""
+            rows.append(f'<tr><td class="opacity-80">{esc(param)}</td>'
+                        f'<td class="text-right font-semibold whitespace-nowrap">{esc(val)}</td></tr>')
     return "".join(rows)
 
 
@@ -114,8 +120,8 @@ for i, p in enumerate(P):
   <div class="card-body gap-2">
     <div class="flex flex-wrap gap-1">{gisp}
       <span class="badge badge-outline">{TYPE_LABEL[typ]}</span></div>
-    <h3 class="card-title text-base leading-snug">{esc(name)}</h3>
-    <p class="text-xl font-extrabold text-accent">{esc(p['price'])}</p>
+    <h3 class="card-title text-xl leading-snug">{esc(name)}</h3>
+    <p class="text-base text-accent mt-1">{esc(p['price'])}</p>
     <p class="text-sm opacity-90">{esc(short)}</p>
     <button type="button" class="btn btn-outline btn-primary btn-sm w-full mt-1 spec-toggle"
             data-spec="spec-{i}">Технические характеристики</button>
@@ -129,7 +135,7 @@ for i, p in enumerate(P):
     </div>
     <div class="overflow-y-auto p-2 grow">
       <table class="table table-sm text-sm">
-        <tbody>{spec_table(p.get("specs"))}</tbody>
+        <tbody>{spec_table(p.get("specs"), p.get("specs_full"))}</tbody>
       </table>
     </div>
   </div>
@@ -217,7 +223,8 @@ page = f"""<!DOCTYPE html>
 }}
 /* Брендовые шрифты СТАНЭКСПЕРТ: заголовки — Magistral Extra Bold,
    основной текст — Futura. Это коммерческие шрифты: где не установлены,
-   срабатывает каскад фолбэков. */
+   срабатывает каскад фолбэков. Строго без italic — никакого наклона. */
+* {{ font-style: normal !important; }}
 body {{ font-family: 'Futura', 'Futura PT', 'Trebuchet MS', 'Segoe UI', Arial, sans-serif; }}
 h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold', 'Magistral', 'Futura', 'Trebuchet MS', 'Segoe UI', Arial, sans-serif; font-weight: 800; }}
 </style>
