@@ -60,44 +60,83 @@ hero_img = next((ph for p in P for ph in p["photos"]
 # ---------------- карточки каталога ----------------
 TYPE_LABEL = {"rastochny": "Расточной", "naplavka": "Наплавочный",
               "complex": "Расточно-наплавочный"}
+
+# Короткие описания (без выдуманных фактов: только диапазоны из specs).
+SHORT_TEXT = [
+    "МНС59 ЦПУ позволяет выполнять внутреннюю наплавку в диапазоне от 25 до 1000 мм и наружную наплавку поверхностей диаметром от 100 до 1000 мм, без демонтажа крупногабаритной детали.",
+    "МРНК ПИОНЕР ЦПУ ПЛЮС выполняет расточку отверстий от 25 до 220 мм, внутреннюю наплавку от 25 до 400 мм и наружную наплавку поверхностей от 100 до 500 мм — без демонтажа детали.",
+    "МРНК ПИОНЕР-2 ЦПУ БАЗА ПЛЮС выполняет расточку отверстий от 25 до 400 мм, внутреннюю наплавку от 25 до 400 мм и наружную наплавку поверхностей от 50 до 1000 мм — без демонтажа детали.",
+    "МРНК ТАРМАН 400 ЦПУ БАЗА ПЛЮС выполняет расточку отверстий от 25 до 600 мм, внутреннюю наплавку от 25 до 600 мм и наружную наплавку поверхностей от 100 до 1000 мм — без демонтажа детали.",
+    "МРНК-59 ЦПУ БАЗА выполняет расточку отверстий от 25 до 800 мм, внутреннюю наплавку от 45 до 500 мм и наружную наплавку поверхностей от 50 до 500 мм — без демонтажа детали.",
+    "ТАРМАН 200 выполняет расточку отверстий от 25 до 220 мм, внутреннюю наплавку от 25 до 220 мм и наружную наплавку поверхностей от 100 до 500 мм — без демонтажа детали.",
+    "ТАРМАН 600 с двухскоростным приводом и консольной подачей выполняет расточку отверстий от 25 до 600 мм, внутреннюю наплавку от 25 до 600 мм и наружную наплавку поверхностей от 100 до 500 мм — без демонтажа детали.",
+    "МРНК 59 ЦПУ выполняет расточку отверстий от 25 до 800 мм, внутреннюю наплавку от 45 до 500 мм и наружную наплавку поверхностей от 50 до 500 мм — без демонтажа детали.",
+    "МРНК ПИОНЕР-2 ЦПУ ПЛЮС выполняет расточку отверстий от 25 до 400 мм, внутреннюю наплавку от 25 до 400 мм и наружную наплавку поверхностей от 50 до 1000 мм — без демонтажа детали.",
+    "МРНК ТАРМАН 400 ЦПУ ПЛЮС выполняет расточку отверстий от 25 до 600 мм, внутреннюю наплавку от 25 до 600 мм и наружную наплавку поверхностей от 100 до 1000 мм — без демонтажа детали.",
+    "ПИОНЕР БАЗА ПЛЮС выполняет расточку изношенных цилиндрических и соосных отверстий от 25 до 220 мм — без демонтажа детали.",
+    "ПИОНЕР с автоподачей выполняет расточку изношенных отверстий и соосных посадочных мест от 25 до 220 мм — без демонтажа детали.",
+    "Станок ВАЛА 59993 применяется для райберовки соосных отверстий в сопрягаемых деталях — чтобы обеспечить точное взаимное положение элементов после сборки.",
+    "ПИОНЕР-2 ЦПУ ПЛЮС выполняет расточку изношенных отверстий и соосных посадочных мест от 25 до 400 мм — без демонтажа детали.",
+]
+
+
+def spec_table(specs):
+    """Двухстолбцовая таблица: параметр | значение (разбор строк specs)."""
+    import re
+    rows = []
+    for s in specs or []:
+        m = re.match(r"^(.*?)(\d.*)$", s.strip())
+        if m:
+            param, val = m.group(1).strip(" ."), m.group(2).strip()
+        else:
+            param, val = s.strip(), ""
+        rows.append(f'<tr><td class="opacity-80">{esc(param)}</td>'
+                    f'<td class="text-right font-semibold whitespace-nowrap">{esc(val)}</td></tr>')
+    return "".join(rows)
+
+
 cards, ld_items = [], []
 for i, p in enumerate(P):
     name = short_name(p["name"])
-    lead, rest = split_desc(p["desc"])
-    specs = " · ".join(p.get("specs") or [])
+    short = SHORT_TEXT[i] if i < len(SHORT_TEXT) else split_desc(p["desc"])[0]
     typ = p.get("type", "complex")
     gisp = ('<span class="badge badge-accent text-white">ГИСП Минпромторга · '
             'полная комплектация</span>' if p["gisp"] else "")
+    # квадратное окно фото, без рамок
     imgs = "".join(
         f'<div class="carousel-item w-full"><img src="{esc(src)}" '
-        f'alt="{esc(name)}" class="w-full aspect-4/3 object-cover" '
+        f'alt="{esc(name)}" class="w-full aspect-square object-cover" '
         f'loading="lazy"></div>' for src in p["photos"])
     price_num = "".join(ch for ch in p["price"] if ch.isdigit())
     cards.append(f"""
-<article class="card bg-base-100 shadow-sm filter-item" data-type="{typ}">
+<article class="card bg-base-100 shadow-sm filter-item relative overflow-visible" data-type="{typ}">
   <div class="carousel w-full">{imgs}</div>
   <div class="card-body gap-2">
     <div class="flex flex-wrap gap-1">{gisp}
       <span class="badge badge-outline">{TYPE_LABEL[typ]}</span></div>
     <h3 class="card-title text-base leading-snug">{esc(name)}</h3>
     <p class="text-xl font-extrabold text-accent">{esc(p['price'])}</p>
-    <p class="text-sm opacity-80">{esc(specs)}</p>
-    <p class="text-sm">{esc(lead)}</p>
-    <div class="collapse collapse-arrow bg-base-200 rounded-box">
-      <input type="checkbox" aria-label="Подробнее">
-      <div class="collapse-title text-sm font-semibold">Подробнее</div>
-      <div class="collapse-content text-sm opacity-90"><p>{esc(rest)}</p></div>
+    <p class="text-sm opacity-90">{esc(short)}</p>
+    <button type="button" class="btn btn-outline btn-primary btn-sm w-full mt-1 spec-toggle"
+            data-spec="spec-{i}">Технические характеристики</button>
+    <button type="button" class="btn btn-accent text-white w-full offer-open js-goal"
+            data-goal="offer_click" data-model="{esc(name)}">Получить предложение</button>
+  </div>
+  <div id="spec-{i}" class="spec-panel hidden absolute inset-x-2 top-2 bottom-2 z-20 rounded-box bg-base-100 shadow-2xl border border-base-300 flex flex-col">
+    <div class="flex items-center justify-between gap-2 p-3 border-b border-base-300">
+      <span class="font-bold text-sm leading-snug">Характеристики · {esc(name)}</span>
+      <button type="button" class="btn btn-ghost btn-sm px-2 spec-close" aria-label="Закрыть">✕</button>
     </div>
-    <div class="card-actions">
-      <a class="btn btn-primary btn-sm js-goal" data-goal="avito_click"
-         href="{AVITO}?utm_source=landing&utm_medium=card&utm_campaign=reserve_landing"
-         target="_blank" rel="noopener">Уточнить на Авито</a>
+    <div class="overflow-y-auto p-2 grow">
+      <table class="table table-sm text-sm">
+        <tbody>{spec_table(p.get("specs"))}</tbody>
+      </table>
     </div>
   </div>
 </article>""")
     ld_items.append({
         "@type": "Product", "name": f"СТАНЭКСПЕРТ {name}",
-        "description": lead, "image": p["photos"][0] if p["photos"] else "",
+        "description": short, "image": p["photos"][0] if p["photos"] else "",
         "offers": {"@type": "Offer", "priceCurrency": "RUB",
                    "price": price_num or "0",
                    "availability": "https://schema.org/InStock"},
@@ -176,10 +215,15 @@ page = f"""<!DOCTYPE html>
   --size-selector: 0.25rem; --size-field: 0.25rem; --border: 1px;
   --depth: 0; --noise: 0;
 }}
+/* Брендовые шрифты СТАНЭКСПЕРТ: заголовки — Magistral Extra Bold,
+   основной текст — Futura. Это коммерческие шрифты: где не установлены,
+   срабатывает каскад фолбэков. */
+body {{ font-family: 'Futura', 'Futura PT', 'Trebuchet MS', 'Segoe UI', Arial, sans-serif; }}
+h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold', 'Magistral', 'Futura', 'Trebuchet MS', 'Segoe UI', Arial, sans-serif; font-weight: 800; }}
 </style>
 <script type="application/ld+json">
 {json.dumps({"@context": "https://schema.org",
-             "@graph": [{"@type": "ItemList", "name": "Каталог станков СТАНЭКСПЕРТ",
+             "@graph": [{"@type": "ItemList", "name": "Модельный ряд СТАНЭКСПЕРТ",
                          "itemListElement": [
     {"@type": "ListItem", "position": i + 1, "item": it}
     for i, it in enumerate(ld_items)]}, ld_faq]}, ensure_ascii=False, indent=1)}
@@ -194,7 +238,7 @@ page = f"""<!DOCTYPE html>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal text-sm">
       <li><a href="#segments">Кому подходит</a></li>
-      <li><a href="#catalog">Каталог</a></li>
+      <li><a href="#catalog">Модельный ряд</a></li>
       <li><a href="#leasing">Лизинг</a></li>
       <li><a href="#faq">Вопросы</a></li>
       <li><a href="#contacts">Контакты</a></li>
@@ -236,8 +280,8 @@ page = f"""<!DOCTYPE html>
 </section>
 
 <section id="catalog" class="max-w-7xl mx-auto px-4 py-6">
-  <h2 class="text-2xl md:text-3xl font-bold mb-2">Каталог</h2>
-  <p class="opacity-70 mb-4">14 моделей собственного производства. Цены с НДС. Все характеристики и комплектации — в объявлениях на Авито.</p>
+  <h2 class="text-2xl md:text-3xl font-bold mb-2">Модельный ряд</h2>
+  <p class="opacity-70 mb-4">14 моделей собственного производства. Цены с НДС. Характеристики каждой модели — под кнопкой «Технические характеристики» в карточке.</p>
   <div class="flex flex-wrap gap-2 mb-6" role="group" aria-label="Фильтр по типу станка">
     <button class="btn btn-sm btn-primary filter-btn" data-filter="all">Все</button>
     <button class="btn btn-sm filter-btn" data-filter="complex">Расточно-наплавочные</button>
@@ -317,6 +361,31 @@ page = f"""<!DOCTYPE html>
   </div>
 </section>
 
+<dialog id="offer-modal" class="modal">
+  <div class="modal-box">
+    <h3 class="text-xl font-bold">Получить предложение</h3>
+    <p class="py-2 text-sm opacity-80">Станок: <span id="offer-model" class="font-semibold"></span></p>
+    <form id="offer-form" class="flex flex-col gap-3 mt-1">
+      <input type="hidden" name="model" id="offer-model-input">
+      <label class="form-control w-full">
+        <span class="label-text mb-1 font-medium">Телефон *</span>
+        <input name="phone" type="tel" required maxlength="30" placeholder="+7 (___) ___-__-__" class="input input-bordered w-full">
+      </label>
+      <label class="form-control w-full">
+        <span class="label-text mb-1 font-medium">Email *</span>
+        <input name="email" type="email" required maxlength="120" placeholder="name@company.ru" class="input input-bordered w-full">
+      </label>
+      <label class="flex items-start gap-2 text-xs opacity-80 cursor-pointer">
+        <input name="agree" type="checkbox" required class="checkbox checkbox-sm checkbox-primary mt-0.5">
+        <span>Согласен(на) на обработку персональных данных</span>
+      </label>
+      <button type="submit" id="offer-btn" class="btn btn-accent text-white w-full">Отправить</button>
+      <p id="offer-status" class="text-center text-sm min-h-5"></p>
+    </form>
+  </div>
+  <form method="dialog" class="modal-backdrop"><button aria-label="Закрыть">закрыть</button></form>
+</dialog>
+
 <footer id="contacts" class="footer footer-center bg-neutral text-neutral-content p-10 gap-4">
   <div>
     <p class="text-2xl font-extrabold">СТАНЭКСПЕРТ®</p>
@@ -359,9 +428,9 @@ document.querySelectorAll('.filter-btn').forEach(function (b) {{
     if (form.company.value) return; /* honeypot */
     var name = form.name.value.trim(), phone = form.phone.value.trim(), msg = form.msg.value.trim();
     if (!name || !phone) {{ status.textContent = 'Заполните имя и телефон.'; status.className = 'text-center text-sm min-h-5 text-error'; return; }}
-    var text = '🔔 ЗАЯВКА С РЕЗЕРВНОГО ЛЕНДИНГА\n\n👤 Имя: ' + name + '\n📞 Телефон: ' + phone +
-               (msg ? '\n💬 Комментарий: ' + msg : '') +
-               '\n\n🌐 Страница: ' + location.href;
+    var text = '🔔 ЗАЯВКА С РЕЗЕРВНОГО ЛЕНДИНГА\\n\\n👤 Имя: ' + name + '\\n📞 Телефон: ' + phone +
+               (msg ? '\\n💬 Комментарий: ' + msg : '') +
+               '\\n\\n🌐 Страница: ' + location.href;
     btn.disabled = true; btn.textContent = 'Отправляем…';
     fetch('https://api.telegram.org/bot{TG_TOKEN}/sendMessage', {{
       method: 'POST', headers: {{'Content-Type': 'application/json'}},
@@ -381,6 +450,65 @@ document.querySelectorAll('.filter-btn').forEach(function (b) {{
       status.className = 'text-center text-sm min-h-5 text-error';
     }}).finally(function () {{
       btn.disabled = false; btn.textContent = 'Отправить заявку';
+    }});
+  }});
+}})();
+</script>
+
+<script>
+/* «Технические характеристики»: оверлей поверх карточки, не влияет на сетку */
+document.querySelectorAll('.spec-toggle').forEach(function (b) {{
+  b.addEventListener('click', function () {{
+    var el = document.getElementById(b.dataset.spec);
+    if (el) el.classList.toggle('hidden');
+  }});
+}});
+document.querySelectorAll('.spec-close').forEach(function (b) {{
+  b.addEventListener('click', function () {{
+    b.closest('.spec-panel').classList.add('hidden');
+  }});
+}});
+
+/* «Получить предложение»: модалка с телефоном и email -> тот же бот, топик 244 */
+(function () {{
+  var modal = document.getElementById('offer-modal');
+  var form = document.getElementById('offer-form');
+  var btn = document.getElementById('offer-btn');
+  var status = document.getElementById('offer-status');
+  document.querySelectorAll('.offer-open').forEach(function (b) {{
+    b.addEventListener('click', function () {{
+      document.getElementById('offer-model').textContent = b.dataset.model;
+      document.getElementById('offer-model-input').value = b.dataset.model;
+      status.textContent = '';
+      modal.showModal();
+    }});
+  }});
+  form.addEventListener('submit', function (e) {{
+    e.preventDefault();
+    var model = form.model.value.trim(), phone = form.phone.value.trim(), email = form.email.value.trim();
+    if (!phone || !email) {{ status.textContent = 'Заполните телефон и email.'; status.className = 'text-center text-sm min-h-5 text-error'; return; }}
+    var text = '🔔 ЗАПРОС ПРЕДЛОЖЕНИЯ ПО СТАНКУ\\n\\n🏭 Станок: ' + model + '\\n📞 Телефон: ' + phone +
+               '\\n✉️ Email: ' + email + '\\n\\n🌐 Страница: ' + location.href;
+    btn.disabled = true; btn.textContent = 'Отправляем…';
+    fetch('https://api.telegram.org/bot{TG_TOKEN}/sendMessage', {{
+      method: 'POST', headers: {{'Content-Type': 'application/json'}},
+      body: JSON.stringify({{chat_id: '{TG_CHAT_ID}', message_thread_id: '{TG_THREAD_ID}', text: text, parse_mode: 'HTML'}})
+    }}).then(function (r) {{ return r.json(); }}).then(function (d) {{
+      if (d.ok) {{
+        status.textContent = 'Отправлено! Пришлём предложение на указанный email.';
+        status.className = 'text-center text-sm min-h-5 text-success';
+        form.reset();
+        if (window.ym) ym({METRIKA}, 'reachGoal', 'offer_sent');
+        setTimeout(function () {{ modal.close(); }}, 1500);
+      }} else {{
+        status.textContent = 'Не отправилось. Позвоните нам: {PHONE_DISP}';
+        status.className = 'text-center text-sm min-h-5 text-error';
+      }}
+    }}).catch(function () {{
+      status.textContent = 'Нет связи. Позвоните нам: {PHONE_DISP}';
+      status.className = 'text-center text-sm min-h-5 text-error';
+    }}).finally(function () {{
+      btn.disabled = false; btn.textContent = 'Отправить';
     }});
   }});
 }})();
