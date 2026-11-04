@@ -831,9 +831,8 @@ h1, h2, h3, h4, .card-title, .btn, .navbar { font-family: 'Magistral Extra Bold'
       <li class="step step-accent">Получаете оборудование</li>
     </ul>
     <div class="mt-8">
-      <a class="btn btn-primary js-goal" data-goal="avito_click"
-         href="https://www.avito.ru/brands/stanexpert?utm_source=landing&utm_medium=leasing&utm_campaign=reserve_landing"
-         target="_blank" rel="noopener">Получить расчёт платежа на Авито</a>
+      <a class="btn btn-primary js-goal" data-goal="leasing_offer_click"
+         href="#lead-form" id="leasing-offer-btn">Получить расчёт платежа</a>
     </div>
   </div>
 </section>
@@ -1077,12 +1076,14 @@ document.querySelectorAll('.spec-close').forEach(function (b) {
     b.closest('.spec-panel').classList.add('hidden');
   });
 });
-/* кнопка Hero «Получить предложение» -> скролл к форме + фокус в поле имени */
-document.getElementById('hero-offer-btn').addEventListener('click', function () {
-  setTimeout(function () {
-    var f = document.querySelector('#tg-form [name=name]');
-    if (f) f.focus();
-  }, 600);
+/* кнопки «Получить предложение/расчёт» -> скролл к форме + фокус в поле имени */
+document.querySelectorAll('#hero-offer-btn, #leasing-offer-btn').forEach(function (btn) {
+  btn.addEventListener('click', function () {
+    setTimeout(function () {
+      var f = document.querySelector('#tg-form [name=name]');
+      if (f) f.focus();
+    }, 600);
+  });
 });
 
 /* «Получить предложение»: модалка с телефоном и email -> тот же бот, топик 244 */
