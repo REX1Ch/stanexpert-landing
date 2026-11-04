@@ -54,8 +54,7 @@ def split_desc(desc):
     return (parts[0] if parts else "", " ".join(parts[1:]))
 
 
-hero_img = next((ph for p in P for ph in p["photos"]
-                 if "пионерцпуплюс" in ph), P[0]["photos"][0])
+hero_img = "img/hero_bg.jpg"
 
 # ---------------- карточки каталога ----------------
 TYPE_LABEL = {"rastochny": "Расточной", "naplavka": "Наплавочный",
@@ -279,8 +278,8 @@ h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold
   </div>
 </div>
 
-<div class="hero min-h-[70vh]" style="background-image:url('{esc(hero_img)}')">
-  <div class="hero-overlay bg-neutral/70"></div>
+<div class="hero min-h-[70vh] bg-cover" style="background-image:url('{esc(hero_img)}'); background-position: 62% center;">
+  <div class="hero-overlay bg-neutral/50"></div>
   <div class="hero-content text-neutral-content text-center px-4 py-16">
     <div class="max-w-3xl">
       <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">Мобильные расточные и наплавочные станки</h1>
