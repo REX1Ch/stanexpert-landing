@@ -253,7 +253,11 @@ h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold
 
 <div class="navbar bg-primary text-primary-content sticky top-0 z-10">
   <div class="navbar-start">
-    <span class="text-xl font-extrabold tracking-wide px-2">СТАНЭКСПЕРТ<span class="align-super text-xs">®</span></span>
+    <a href="#top" aria-label="СТАНЭКСПЕРТ — наверх">
+      <span class="bg-white rounded-md px-2.5 py-1.5 inline-flex items-center">
+        <img src="img/logo.png" alt="СТАНЭКСПЕРТ®" class="h-6 w-auto">
+      </span>
+    </a>
   </div>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal text-sm">
@@ -269,9 +273,13 @@ h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold
        href="{TG}" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram">
       <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M9.04 15.9l-.38 5.36c.55 0 .79-.24 1.08-.52l2.6-2.48 5.38 3.94c.99.55 1.69.26 1.96-.9L23.9 4.6c.32-1.45-.52-2.02-1.48-1.66L1.7 10.9c-1.4.55-1.38 1.34-.24 1.7l5.28 1.64L18.98 6.5c.58-.38 1.1-.17.67.21z"/></svg>
     </a>
+    <a class="btn btn-ghost btn-sm btn-circle text-primary-content js-goal" data-goal="email_click"
+       href="mailto:{EMAIL}" aria-label="Email" title="{EMAIL}">
+      <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg>
+    </a>
     <a class="btn btn-ghost btn-sm btn-circle text-primary-content js-goal" data-goal="max_click"
        href="{MAXL}" target="_blank" rel="noopener" aria-label="MAX" title="MAX">
-      <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M12 2C6.48 2 2 6.02 2 11c0 2.4 1.05 4.58 2.77 6.2-.1 1.13-.5 2.6-1.77 3.8 0 0 2.65-.14 4.62-1.46.83.2 1.7.31 2.6.34l.78.02c5.52 0 10-4.02 10-9S17.52 2 12 2zM7.5 12.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm4.5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm4.5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>
+      <img src="img/max-white.png" alt="MAX" class="w-5 h-5">
     </a>
     <a class="btn btn-accent btn-sm text-white js-goal" data-goal="call_click"
        href="{PHONE_TEL}">☎ <span class="hidden sm:inline">{PHONE_DISP}</span></a>
@@ -449,17 +457,26 @@ h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold
 
 <footer id="contacts" class="footer footer-center bg-neutral text-neutral-content p-10 gap-4">
   <div>
-    <p class="text-2xl font-extrabold">СТАНЭКСПЕРТ®</p>
-    <p class="opacity-80">Производитель мобильных расточно-наплавочных комплексов</p>
+    <span class="bg-white rounded-md px-3 py-2 inline-flex items-center">
+      <img src="img/logo.png" alt="СТАНЭКСПЕРТ®" class="h-7 w-auto">
+    </span>
+    <p class="opacity-80 mt-3">Производитель мобильных расточно-наплавочных комплексов</p>
   </div>
-  <div class="flex flex-wrap justify-center gap-3">
-    <a class="btn btn-primary js-goal" data-goal="avito_click"
-       href="{AVITO}?utm_source=landing&utm_medium=footer&utm_campaign=reserve_landing"
-       target="_blank" rel="noopener">Авито</a>
-    <a class="btn btn-accent text-white js-goal" data-goal="call_click" href="{PHONE_TEL}">{PHONE_DISP}</a>
-    <a class="btn btn-outline btn-neutral-content js-goal" data-goal="tg_click" href="{TG}" target="_blank" rel="noopener">Telegram</a>
-    <a class="btn btn-outline btn-neutral-content js-goal" data-goal="max_click" href="{MAXL}" target="_blank" rel="noopener">MAX</a>
-    <a class="btn btn-outline btn-neutral-content js-goal" data-goal="email_click" href="mailto:{EMAIL}">{EMAIL}</a>
+  <div class="flex flex-wrap justify-center gap-2">
+    <a class="btn btn-accent text-white js-goal" data-goal="call_click"
+       href="{PHONE_TEL}">☎ {PHONE_DISP}</a>
+    <a class="btn btn-ghost btn-circle text-neutral-content js-goal" data-goal="email_click"
+       href="mailto:{EMAIL}" aria-label="Email" title="{EMAIL}">
+      <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5z"/></svg>
+    </a>
+    <a class="btn btn-ghost btn-circle text-neutral-content js-goal" data-goal="tg_click"
+       href="{TG}" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram">
+      <svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M9.04 15.9l-.38 5.36c.55 0 .79-.24 1.08-.52l2.6-2.48 5.38 3.94c.99.55 1.69.26 1.96-.9L23.9 4.6c.32-1.45-.52-2.02-1.48-1.66L1.7 10.9c-1.4.55-1.38 1.34-.24 1.7l5.28 1.64L18.98 6.5c.58-.38 1.1-.17.67.21z"/></svg>
+    </a>
+    <a class="btn btn-ghost btn-circle text-neutral-content js-goal" data-goal="max_click"
+       href="{MAXL}" target="_blank" rel="noopener" aria-label="MAX" title="MAX">
+      <img src="img/max-white.png" alt="MAX" class="w-5 h-5">
+    </a>
   </div>
   <p class="text-xs opacity-60 max-w-xl">Резервная страница: основной сайт stanexpert.com временно недоступен по техническим причинам. Цены и комплектации актуальны на дату публикации. Услуги расточки и наплавки оказывают партнёрские сервисы на оборудовании СТАНЭКСПЕРТ.</p>
 </footer>
