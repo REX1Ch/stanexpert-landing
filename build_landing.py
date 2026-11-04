@@ -296,6 +296,7 @@ h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold
         <span class="badge badge-lg bg-white/10 text-white h-auto py-1.5 whitespace-normal leading-snug">Лизинг от 4,6% · взнос от 0% · до 36 мес</span>
         <span class="badge badge-lg bg-white/10 text-white h-auto py-1.5 whitespace-normal leading-snug">Более 10 лет производим станки и оснастку</span>
         <span class="badge badge-lg bg-white/10 text-white h-auto py-1.5 whitespace-normal leading-snug">Поставка от 3 дней</span>
+        <span class="badge badge-lg bg-white/10 text-white h-auto py-1.5 whitespace-normal leading-snug">Доставка по всей России и ЕАЭС</span>
       </div>
       <div class="flex flex-wrap justify-center gap-3">
         <a class="btn btn-primary btn-lg js-goal" data-goal="hero_offer_click"
