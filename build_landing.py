@@ -343,8 +343,8 @@ h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold
       <li class="step step-accent">Получаете оборудование</li>
     </ul>
     <div class="mt-8">
-      <a class="btn btn-primary js-goal" data-goal="leasing_offer_click"
-         href="#lead-form" id="leasing-offer-btn">Получить расчёт платежа</a>
+      <button type="button" class="btn btn-primary js-goal offer-open" data-goal="leasing_offer_click"
+         data-model="Лизинг — расчёт платежа">Получить расчёт платежа</button>
     </div>
   </div>
 </section>
@@ -397,7 +397,7 @@ h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold
 <section id="lead-form" class="bg-base-200 py-14 my-10">
   <div class="max-w-xl mx-auto px-4">
     <h2 class="text-2xl md:text-3xl font-bold mb-2 text-center">Оставить заявку</h2>
-    <p class="text-center opacity-80 mb-6">Перезвоним и подберём комплектацию под вашу задачу. Работаем с юрлицами и ИП: лизинг от 4,6%, взнос от 0%.</p>
+    <p class="text-center opacity-80 mb-6">Перезвоним и подберём комплектацию под вашу задачу.</p>
     <form id="tg-form" class="card bg-base-100 shadow-md">
       <div class="card-body gap-4">
         <label class="form-control w-full">
@@ -434,7 +434,7 @@ h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold
 <dialog id="offer-modal" class="modal">
   <div class="modal-box">
     <h3 class="text-xl font-bold">Получить предложение</h3>
-    <p class="py-2 text-sm opacity-80">Станок: <span id="offer-model" class="font-semibold"></span></p>
+    <p class="py-2 text-sm opacity-80">Запрос: <span id="offer-model" class="font-semibold"></span></p>
     <form id="offer-form" class="flex flex-col gap-3 mt-1">
       <input type="hidden" name="model" id="offer-model-input">
       <label class="form-control w-full">
@@ -547,8 +547,8 @@ document.querySelectorAll('.spec-close').forEach(function (b) {{
     b.closest('.spec-panel').classList.add('hidden');
   }});
 }});
-/* кнопки «Получить предложение/расчёт» -> скролл к форме + фокус в поле имени */
-document.querySelectorAll('#hero-offer-btn, #leasing-offer-btn').forEach(function (btn) {{
+/* кнопка «Получить предложение» в hero -> скролл к форме + фокус в поле имени */
+document.querySelectorAll('#hero-offer-btn').forEach(function (btn) {{
   btn.addEventListener('click', function () {{
     setTimeout(function () {{
       var f = document.querySelector('#tg-form [name=name]');
@@ -575,7 +575,7 @@ document.querySelectorAll('#hero-offer-btn, #leasing-offer-btn').forEach(functio
     e.preventDefault();
     var model = form.model.value.trim(), phone = form.phone.value.trim(), email = form.email.value.trim();
     if (!phone || !email) {{ status.textContent = 'Заполните телефон и email.'; status.className = 'text-center text-sm min-h-5 text-error'; return; }}
-    var text = '🔔 ЗАПРОС ПРЕДЛОЖЕНИЯ ПО СТАНКУ\\n\\n🏭 Станок: ' + model + '\\n📞 Телефон: ' + phone +
+    var text = '🔔 ЗАПРОС ПРЕДЛОЖЕНИЯ\\n\\n📌 Запрос: ' + model + '\\n📞 Телефон: ' + phone +
                '\\n✉️ Email: ' + email + '\\n\\n🌐 Страница: ' + location.href;
     btn.disabled = true; btn.textContent = 'Отправляем…';
     fetch('https://api.telegram.org/bot{TG_TOKEN}/sendMessage', {{
