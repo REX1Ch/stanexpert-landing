@@ -379,17 +379,16 @@ h1, h2, h3, h4, .card-title, .btn, .navbar { font-family: 'Magistral Extra Bold'
   <div class="hero-overlay bg-neutral/70"></div>
   <div class="hero-content text-neutral-content text-center px-4 py-16">
     <div class="max-w-3xl">
-      <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">Мобильные расточно-наплавочные комплексы для восстановления изношенных отверстий</h1>
-      <p class="py-6 text-base md:text-lg">Ремонт проушин, ковшей, стрел, редукторов и узлов спецтехники, сельхозмашин и промышленного оборудования — непосредственно на месте ремонта, без демонтажа детали. Диапазон обработки Ø25–1000 мм.</p>
+      <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">Мобильные расточные и наплавочные станки</h1>
+      <p class="py-6 text-base md:text-lg">Российский завод-изготовитель мобильных станков для расточки, торцовки, наплавки, проточки, нарезания резьбы. Диапазон обработки Ø25–1000 мм. Бесплатная демонстрация онлайн или на производстве</p>
       <div class="flex flex-wrap justify-center gap-2 pb-6">
         <span class="badge badge-lg bg-white/10 text-white h-auto py-1.5 whitespace-normal leading-snug">Лизинг от 4,6% · взнос от 0% · до 36 мес</span>
-        <span class="badge badge-lg bg-white/10 text-white h-auto py-1.5 whitespace-normal leading-snug">Полные комплектации — в каталоге ГИСП Минпромторга</span>
-        <span class="badge badge-lg bg-white/10 text-white h-auto py-1.5 whitespace-normal leading-snug">Россия · Казахстан · Беларусь</span>
+        <span class="badge badge-lg bg-white/10 text-white h-auto py-1.5 whitespace-normal leading-snug">Более 10 лет производим станки и оснастку</span>
+        <span class="badge badge-lg bg-white/10 text-white h-auto py-1.5 whitespace-normal leading-snug">Поставка от 3 дней</span>
       </div>
       <div class="flex flex-wrap justify-center gap-3">
-        <a class="btn btn-primary btn-lg js-goal" data-goal="avito_click"
-           href="https://www.avito.ru/brands/stanexpert?utm_source=landing&utm_medium=hero&utm_campaign=reserve_landing"
-           target="_blank" rel="noopener">Написать на Авито</a>
+        <a class="btn btn-primary btn-lg js-goal" data-goal="hero_offer_click"
+           href="#lead-form" id="hero-offer-btn">Получить предложение</a>
         <a class="btn btn-accent btn-lg text-white js-goal" data-goal="call_click"
            href="tel:+78001007249">Позвонить: 8 (800) 100-72-49</a>
       </div>
@@ -1034,6 +1033,13 @@ document.querySelectorAll('.spec-close').forEach(function (b) {
   b.addEventListener('click', function () {
     b.closest('.spec-panel').classList.add('hidden');
   });
+});
+/* кнопка Hero «Получить предложение» -> скролл к форме + фокус в поле имени */
+document.getElementById('hero-offer-btn').addEventListener('click', function () {
+  setTimeout(function () {
+    var f = document.querySelector('#tg-form [name=name]');
+    if (f) f.focus();
+  }, 600);
 });
 
 /* «Получить предложение»: модалка с телефоном и email -> тот же бот, топик 244 */
