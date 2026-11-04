@@ -341,13 +341,48 @@ h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold
   </div>
 </section>
 
-<section class="max-w-7xl mx-auto px-4 py-10">
-  <h2 class="text-2xl md:text-3xl font-bold mb-6">Производитель, а не перекуп</h2>
-  <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-    <div class="card bg-base-100 shadow-sm"><div class="card-body"><h3 class="card-title text-base">Собственное производство</h3><p class="text-sm opacity-80">Мобильные комплексы производим сами — не дилер и не посредник.</p></div></div>
-    <div class="card bg-base-100 shadow-sm"><div class="card-body"><h3 class="card-title text-base">Каталог ГИСП</h3><p class="text-sm opacity-80">Полные комплектации включены в каталог ГИСП Минпромторга.</p></div></div>
-    <div class="card bg-base-100 shadow-sm"><div class="card-body"><h3 class="card-title text-base">Сервис партнёров</h3><p class="text-sm opacity-80">Услуги расточки и наплавки на нашем оборудовании оказывают партнёры по всей России.</p></div></div>
-    <div class="card bg-base-100 shadow-sm"><div class="card-body"><h3 class="card-title text-base">География поставок</h3><p class="text-sm opacity-80">Россия, Казахстан, Беларусь: доставка и запуск под ключ.</p></div></div>
+<section id="certs" class="bg-base-200 py-14 my-10">
+  <div class="max-w-7xl mx-auto px-4">
+    <h2 class="text-2xl md:text-3xl font-bold mb-2">Сертификация качества станков Станэксперт</h2>
+    <p class="opacity-70 mb-6">Официальные документы на оборудование. Нажмите на превью, чтобы открыть, или скачайте PDF.</p>
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div class="card bg-base-100 shadow-sm">
+        <a href="docs/sert-tarman-pioner.pdf" target="_blank" rel="noopener" aria-label="Открыть сертификат">
+          <figure><img src="img/sert-tarman-pioner.jpg" alt="Добровольная сертификация оборудования ТАРМАН и ПИОНЕР" class="w-full aspect-3/4 object-cover object-top" loading="lazy"></figure>
+        </a>
+        <div class="card-body gap-2">
+          <h3 class="card-title text-sm leading-snug">Добровольная сертификация оборудования ТАРМАН и ПИОНЕР</h3>
+          <a href="docs/sert-tarman-pioner.pdf" download class="btn btn-outline btn-primary btn-sm">Скачать PDF</a>
+        </div>
+      </div>
+      <div class="card bg-base-100 shadow-sm">
+        <a href="docs/sert-prombezopasnost.pdf" target="_blank" rel="noopener" aria-label="Открыть сертификат">
+          <figure><img src="img/sert-prombezopasnost.jpg" alt="Соответствие требованиям промышленной безопасности" class="w-full aspect-3/4 object-cover object-top" loading="lazy"></figure>
+        </a>
+        <div class="card-body gap-2">
+          <h3 class="card-title text-sm leading-snug">Соответствие требованиям промышленной безопасности</h3>
+          <a href="docs/sert-prombezopasnost.pdf" download class="btn btn-outline btn-primary btn-sm">Скачать PDF</a>
+        </div>
+      </div>
+      <div class="card bg-base-100 shadow-sm">
+        <a href="docs/sert-eaes.pdf" target="_blank" rel="noopener" aria-label="Открыть сертификат">
+          <figure><img src="img/sert-eaes.jpg" alt="Соответствие требованиям безопасности ЕАЭС" class="w-full aspect-3/4 object-cover object-top" loading="lazy"></figure>
+        </a>
+        <div class="card-body gap-2">
+          <h3 class="card-title text-sm leading-snug">Соответствие требованиям безопасности ЕАЭС</h3>
+          <a href="docs/sert-eaes.pdf" download class="btn btn-outline btn-primary btn-sm">Скачать PDF</a>
+        </div>
+      </div>
+      <div class="card bg-base-100 shadow-sm">
+        <a href="docs/sert-iso9001.pdf" target="_blank" rel="noopener" aria-label="Открыть сертификат">
+          <figure><img src="img/sert-iso9001.jpg" alt="Система менеджмента качества ISO 9001" class="w-full aspect-3/4 object-cover object-top" loading="lazy"></figure>
+        </a>
+        <div class="card-body gap-2">
+          <h3 class="card-title text-sm leading-snug">Система менеджмента качества ISO 9001</h3>
+          <a href="docs/sert-iso9001.pdf" download class="btn btn-outline btn-primary btn-sm">Скачать PDF</a>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
