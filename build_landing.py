@@ -54,7 +54,7 @@ def split_desc(desc):
     return (parts[0] if parts else "", " ".join(parts[1:]))
 
 
-hero_img = "img/hero_bg.jpg"
+hero_img = "img/hero_bg.webp"
 
 # ---------------- карточки каталога ----------------
 TYPE_LABEL = {"rastochny": "Расточной", "naplavka": "Наплавочный",
@@ -151,17 +151,17 @@ catalog_html = "".join(cards)
 
 # ---------------- сегменты ----------------
 SEGMENTS = [
-    ("Строительная и дорожная техника", "строительная.jpg",
+    ("Строительная и дорожная техника", "строительная.webp",
      "Проушины ковша экскаватора, отверстия стрелы и рукояти под пальцы и втулки, шарниры каретки."),
-    ("Сельскохозяйственная техника", "сельхоз.jpg",
+    ("Сельскохозяйственная техника", "сельхоз.webp",
      "Задняя навеска МТЗ, шарниры рам К-700/701, шкворневые узлы и оси качания мостов."),
-    ("Горнодобывающая и карьерная техника", "горная.jpg",
+    ("Горнодобывающая и карьерная техника", "горная.webp",
      "Станины щёковых и конусных дробилок, посадки под бронзовые втулки, цапфы мельниц."),
-    ("Грузоподъёмная и буровая техника", "грузоподьемная.jpg",
+    ("Грузоподъёмная и буровая техника", "грузоподьемная.webp",
      "Корневые оси стрел автокранов, гильзы КМУ, цилиндры подъёма кузова, ОПУ платформ."),
-    ("Нефтегаз", "нефтегаз.jpg",
+    ("Нефтегаз", "нефтегаз.webp",
      "Станки-качалки: опоры балансиров, головки шатунов, траверсы — знакопеременные нагрузки."),
-    ("Ремонтные и судоремонтные предприятия", "судоремонт.jpg",
+    ("Ремонтные и судоремонтные предприятия", "судоремонт.webp",
      "Корпуса редукторов, гнёзда под обоймы подшипников, наружная проточка фланцев и валов."),
 ]
 segments_html = "".join(f"""
@@ -212,6 +212,7 @@ page = f"""<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
+<link rel="preload" as="image" href="img/hero_bg.webp">
 <title>СТАНЭКСПЕРТ® — мобильные расточно-наплавочные комплексы | Расточка и наплавка отверстий Ø25–1000 мм</title>
 <meta name="description" content="Производитель мобильных расточно-наплавочных станков для восстановления изношенных отверстий спецтехники, сельхозмашин и промышленного оборудования без демонтажа. Лизинг от 4,6%, взнос от 0%, до 36 мес. Полные комплектации в каталоге ГИСП Минпромторга. Услуги расточки и наплавки оказывают партнёры по всей России.">
 <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css">
@@ -354,7 +355,7 @@ h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold
     <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <div class="card bg-base-100 shadow-sm">
         <a href="docs/sert-tarman-pioner.pdf" target="_blank" rel="noopener" aria-label="Открыть сертификат">
-          <figure><img src="img/sert-tarman-pioner.jpg" alt="Добровольная сертификация оборудования ТАРМАН и ПИОНЕР" class="w-full aspect-3/4 object-cover object-top" loading="lazy"></figure>
+          <figure><img src="img/sert-tarman-pioner.webp" alt="Добровольная сертификация оборудования ТАРМАН и ПИОНЕР" class="w-full aspect-3/4 object-cover object-top" loading="lazy"></figure>
         </a>
         <div class="card-body gap-2">
           <h3 class="card-title text-sm leading-snug">Добровольная сертификация оборудования ТАРМАН и ПИОНЕР</h3>
@@ -363,7 +364,7 @@ h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold
       </div>
       <div class="card bg-base-100 shadow-sm">
         <a href="docs/sert-prombezopasnost.pdf" target="_blank" rel="noopener" aria-label="Открыть сертификат">
-          <figure><img src="img/sert-prombezopasnost.jpg" alt="Соответствие требованиям промышленной безопасности" class="w-full aspect-3/4 object-cover object-top" loading="lazy"></figure>
+          <figure><img src="img/sert-prombezopasnost.webp" alt="Соответствие требованиям промышленной безопасности" class="w-full aspect-3/4 object-cover object-top" loading="lazy"></figure>
         </a>
         <div class="card-body gap-2">
           <h3 class="card-title text-sm leading-snug">Соответствие требованиям промышленной безопасности</h3>
@@ -372,7 +373,7 @@ h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold
       </div>
       <div class="card bg-base-100 shadow-sm">
         <a href="docs/sert-eaes.pdf" target="_blank" rel="noopener" aria-label="Открыть сертификат">
-          <figure><img src="img/sert-eaes.jpg" alt="Соответствие требованиям безопасности ЕАЭС" class="w-full aspect-3/4 object-cover object-top" loading="lazy"></figure>
+          <figure><img src="img/sert-eaes.webp" alt="Соответствие требованиям безопасности ЕАЭС" class="w-full aspect-3/4 object-cover object-top" loading="lazy"></figure>
         </a>
         <div class="card-body gap-2">
           <h3 class="card-title text-sm leading-snug">Соответствие требованиям безопасности ЕАЭС</h3>
@@ -381,7 +382,7 @@ h1, h2, h3, h4, .card-title, .btn, .navbar {{ font-family: 'Magistral Extra Bold
       </div>
       <div class="card bg-base-100 shadow-sm">
         <a href="docs/sert-iso9001.pdf" target="_blank" rel="noopener" aria-label="Открыть сертификат">
-          <figure><img src="img/sert-iso9001.jpg" alt="Система менеджмента качества ISO 9001" class="w-full aspect-3/4 object-cover object-top" loading="lazy"></figure>
+          <figure><img src="img/sert-iso9001.webp" alt="Система менеджмента качества ISO 9001" class="w-full aspect-3/4 object-cover object-top" loading="lazy"></figure>
         </a>
         <div class="card-body gap-2">
           <h3 class="card-title text-sm leading-snug">Система менеджмента качества ISO 9001</h3>
