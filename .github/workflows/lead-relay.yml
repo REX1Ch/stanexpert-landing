@@ -1,0 +1,41 @@
+name: Lead Relay
+# Принимает заявку с сайта (repository_dispatch от send.php), расшифровывает
+# и доставляет в Telegram-топик 244. ПДн в логи не выводятся.
+on:
+  repository_dispatch:
+    types: [new-lead]
+permissions: {}
+jobs:
+  relay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Deliver lead to Telegram
+        env:
+          PAYLOAD: ${{ github.event.client_payload.data }}
+          RELAY_KEY: ${{ secrets.RELAY_KEY }}
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          TG_THREAD_ID: ${{ secrets.TG_THREAD_ID }}
+        run: |
+          python3 - <<'PYEOF'
+          import os, json, hashlib, base64, subprocess, urllib.request
+          raw = base64.b64decode(os.environ["PAYLOAD"])
+          iv, ct = raw[:16], raw[16:]
+          key_hex = hashlib.sha256(os.environ["RELAY_KEY"].encode()).hexdigest()
+          p = subprocess.run(["openssl", "enc", "-aes-256-cbc", "-d", "-K", key_hex, "-iv", iv.hex()],
+                             input=ct, capture_output=True)
+          if p.returncode != 0:
+              raise SystemExit("decrypt failed")
+          text = p.stdout.decode("utf-8")
+          body = json.dumps({
+              "chat_id": os.environ["TG_CHAT_ID"],
+              "message_thread_id": int(os.environ["TG_THREAD_ID"]),
+              "text": text,
+          }).encode()
+          req = urllib.request.Request(
+              f"https://api.telegram.org/bot{os.environ['TG_BOT_TOKEN']}/sendMessage",
+              data=body, headers={"Content-Type": "application/json"})
+          with urllib.request.urlopen(req, timeout=20) as r:
+              print("telegram http status:", r.status)
+          PYEOF
